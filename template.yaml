@@ -13,7 +13,7 @@ Resources:
         SecretStringTemplate: '{"username": "lab-user"}'
         GenerateStringKey: password
         PasswordLength: 12
-        ExcludeCharacters: '@/\\"'
+        ExcludeCharacters: "@:/\\\""
 
   # ── Password Change Policy ────────────────────────
   AllowPasswordChange:
@@ -83,7 +83,7 @@ Resources:
       UserName: ec2-user1
       Groups:
         - !Ref EC2UserGroup
-      ManagedPolicies:
+      ManagedPolicyArns:
         - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
@@ -96,12 +96,12 @@ Resources:
       UserName: ec2-user2
       Groups:
         - !Ref EC2UserGroup
-      ManagedPolicies:
+      ManagedPolicyArns:
         - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
-     
+
   S3User:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
@@ -109,7 +109,7 @@ Resources:
       UserName: s3-user
       Groups:
         - !Ref S3UserGroup
-      ManagedPolicies:
+      ManagedPolicyArns:
         - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
