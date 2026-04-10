@@ -1,6 +1,6 @@
-template-file-path: {{TEMPLATE_FILE}}
-stack-name: {{TACK_NAME}}
+template-file-path: ./template.yaml
+stack-name: iam-automation-labs
 parameters: {}
 tags:
-  Project: {{PROJECT_NAME}}
+  Project: iam-automation-labs
   ManagedBy: GitSync
