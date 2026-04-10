@@ -102,7 +102,7 @@ Resources:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
      
-
+#template file
   S3User:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
