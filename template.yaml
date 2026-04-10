@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: IAM Resources Lab - Auto-generated users and groups
+
+Resources:
+
+  # ── Secrets Manager ──────────────────────────────
+  IAMUserPassword:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: /lab/iam/temp-password
+      Description: Temporary password for all IAM lab users
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "lab-user"}'
+        GenerateStringKey: password
+        PasswordLength: 12
+        ExcludeCharacters: '"@/\'
+
+ # ── S3 Group ─────────────────────────────────────
+  S3UserGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: S3UserGroup
+
+  S3GroupPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: S3ListPolicy
+      Groups:
+        - !Ref S3UserGroup
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListAllMyBuckets
+              - s3:ListBucket
+            Resource: "*"
+
+# ── EC2 Group ────────────────────────────────────
+  EC2UserGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: EC2UserGroup
+
+  EC2GroupPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: EC2AccessPolicy
+      Groups:
+        - !Ref EC2UserGroup
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:DescribeInstances
+              - ec2:DescribeImages
+              - ec2:DescribeKeyPairs
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSubnets
+              - ec2:RunInstances
+            Resource: "*"
