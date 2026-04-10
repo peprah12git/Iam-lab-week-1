@@ -1,6 +1,6 @@
-template-file-path: template.yaml
-stack-name: iam-resources-lab
-region: us-east-1
-deployment-targets:
-  accounts:
-    - "897722679541"
+template-file-path: {{TEMPLATE_FILE}}
+stack-name: {{TACK_NAME}}
+parameters: {}
+tags:
+  Project: {{PROJECT_NAME}}
+  ManagedBy: GitSync
