@@ -83,15 +83,7 @@ Resources:
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
-      Policies:
-        - PolicyName: DenyEC2RunInstances
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Deny
-                Action:
-                  - ec2:RunInstances
-                Resource: "*"
+      
 
   S3User:
     Type: AWS::IAM::User
