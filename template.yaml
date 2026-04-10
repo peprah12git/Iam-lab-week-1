@@ -15,7 +15,21 @@ Resources:
         PasswordLength: 12
         ExcludeCharacters: '"@/\'
 
- # ── S3 Group ─────────────────────────────────────
+  # ── Password Change Policy ────────────────────────
+  AllowPasswordChange:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: AllowPasswordChange
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:ChangePassword
+              - iam:GetAccountPasswordPolicy
+            Resource: "*"
+
+  # ── S3 Group ─────────────────────────────────────
   S3UserGroup:
     Type: AWS::IAM::Group
     Properties:
@@ -36,7 +50,7 @@ Resources:
               - s3:ListBucket
             Resource: "*"
 
-# ── EC2 Group ────────────────────────────────────
+  # ── EC2 Group ────────────────────────────────────
   EC2UserGroup:
     Type: AWS::IAM::Group
     Properties:
@@ -61,7 +75,7 @@ Resources:
               - ec2:RunInstances
             Resource: "*"
 
- # ── IAM Users ────────────────────────────────────
+  # ── IAM Users ────────────────────────────────────
   EC2User1:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
@@ -69,6 +83,8 @@ Resources:
       UserName: ec2-user1
       Groups:
         - !Ref EC2UserGroup
+      ManagedPolicies:
+        - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
@@ -80,10 +96,12 @@ Resources:
       UserName: ec2-user2
       Groups:
         - !Ref EC2UserGroup
+      ManagedPolicies:
+        - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
-      
+     
 
   S3User:
     Type: AWS::IAM::User
@@ -92,11 +110,12 @@ Resources:
       UserName: s3-user
       Groups:
         - !Ref S3UserGroup
+      ManagedPolicies:
+        - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
 
-  # ── Outputs ──────────────────────────────────────
 Outputs:
   PasswordSecretARN:
     Description: ARN of the temporary password secret
