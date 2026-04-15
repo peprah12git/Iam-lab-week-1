@@ -3,4 +3,4 @@ stack-name: iam-automation-labs
 parameters: {}
 tags:
   Project: iam-automation-labs
-  ManagedBy: GitSync
+  ManagedBy: GitSync  
