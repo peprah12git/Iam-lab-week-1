@@ -83,18 +83,18 @@ Resources:
     Properties:
       UserName: ec2-user1
       Groups:
-        - !Ref EC2UserGroup
+        - !Ref S3UserGroup
       ManagedPolicyArns:
         - !Ref AllowPasswordChange
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
 
-  peprah-s3:
+  PeprahS3:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
     Properties:
-      UserName: peprah-s3
+      UserName: peprahs3
       Groups:
         - !Ref EC2UserGroup
       ManagedPolicyArns:
@@ -102,7 +102,7 @@ Resources:
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
-        
+
   EC2User2:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
