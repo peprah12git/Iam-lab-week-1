@@ -3,7 +3,6 @@ Description: IAM Resources Lab - Auto-generated users and groups
 
 Resources:
 
-  # ── Secrets Manager ──────────────────────────────
   IAMUserPassword:
     Type: AWS::SecretsManager::Secret
     Properties:
@@ -15,7 +14,6 @@ Resources:
         PasswordLength: 12
         ExcludeCharacters: "@:/\\\""
 
-  # ── Password Change Policy ────────────────────────
   AllowPasswordChange:
     Type: AWS::IAM::ManagedPolicy
     Properties:
@@ -29,7 +27,6 @@ Resources:
               - iam:GetAccountPasswordPolicy
             Resource: "*"
 
-  # ── S3 Group ─────────────────────────────────────
   S3UserGroup:
     Type: AWS::IAM::Group
     Properties:
@@ -50,7 +47,7 @@ Resources:
               - s3:ListBucket
             Resource: "*"
 
-  # ── EC2 Group ────────────────────────────────────
+
   EC2UserGroup:
     Type: AWS::IAM::Group
     Properties:
@@ -79,7 +76,7 @@ Resources:
               - ec2:CreateNetworkInterface
             Resource: "*"
 
-  # ── IAM Users ────────────────────────────────────
+ 
   EC2User1:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
