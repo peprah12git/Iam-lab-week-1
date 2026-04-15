@@ -56,24 +56,31 @@ Resources:
     Properties:
       GroupName: EC2UserGroup
 
-  EC2GroupPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: EC2AccessPolicy
-      Groups:
-        - !Ref EC2UserGroup
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action:
-              - ec2:DescribeInstances
-              - ec2:DescribeImages
-              - ec2:DescribeKeyPairs
-              - ec2:DescribeSecurityGroups
-              - ec2:DescribeSubnets
-              - ec2:RunInstances
-            Resource: "*"
+
+          
+EC2GroupPolicy:
+  Type: AWS::IAM::Policy
+  Properties:
+    PolicyName: EC2AccessPolicy
+    Groups:
+      - !Ref EC2UserGroup
+    PolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+        - Effect: Allow
+          Action:
+            - ec2:DescribeInstances
+            - ec2:DescribeImages
+            - ec2:DescribeKeyPairs
+            - ec2:DescribeSecurityGroups
+            - ec2:DescribeSubnets
+            - ec2:DescribeVpcs
+            - ec2:RunInstances
+            - ec2:CreateTags
+            - ec2:CreateVolume
+            - ec2:CreateNetworkInterface
+          Resource: "*"
+
 
   # ── IAM Users ────────────────────────────────────
   EC2User1:
