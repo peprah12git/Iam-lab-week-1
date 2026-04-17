@@ -76,6 +76,18 @@ Resources:
               - ec2:CreateNetworkInterface
             Resource: "*"
 
+  EC2NoRunInstancesBoundary:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: "ec2:*"
+            Resource: "*"
+          - Effect: Deny
+            Action: "ec2:RunInstances"
+            Resource: "*"
  
   EC2User1:
     Type: AWS::IAM::User
@@ -103,6 +115,7 @@ Resources:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
 
+
   EC2User2:
     Type: AWS::IAM::User
     DependsOn: IAMUserPassword
@@ -112,23 +125,10 @@ Resources:
         - !Ref EC2UserGroup
       ManagedPolicyArns:
         - !Ref AllowPasswordChange
+      PermissionsBoundary: !Ref EC2NoRunInstancesBoundary
       LoginProfile:
         Password: '{{resolve:secretsmanager:/lab/iam/temp-password:SecretString:password}}'
         PasswordResetRequired: true
-        PermissionsBoundary: !Ref EC2NoRunInstancesBoundary
-  EC2NoRunInstancesBoundary:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      ManagedPolicyName: EC2NoRunInstancesBoundary
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action: "ec2:*"
-            Resource: "*"
-          - Effect: Deny
-            Action: "ec2:RunInstances"
-            Resource: "*"
 
   S3User:
     Type: AWS::IAM::User
